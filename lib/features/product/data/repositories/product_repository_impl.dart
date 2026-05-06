@@ -14,19 +14,19 @@ class ProductRepositoryImpl {
       return data.map((item) {
         // LOGIKA NIM GANJIL: Tambahkan [Diskon 10%] di layer Service/Repo
         // Sesuai NIM Raisya 20123007
-        String originalTitle = item['title'];
+        String originalTitle = item['title'] ?? '';
         String modifiedTitle = "$originalTitle [Diskon 10%]"; 
 
         return Product(
           id: item['id'],
           title: modifiedTitle,
           price: (item['price'] as num).toDouble(),
-          description: item['description'],
-          image: item['image'],
+          description: item['description'] ?? '',
+          image: item['image'] ?? '',
         );
       }).toList();
     } catch (e) {
-      throw Exception("Gagal ambil data");
+      throw Exception("Gagal ambil data: $e");
     }
   }
 }
