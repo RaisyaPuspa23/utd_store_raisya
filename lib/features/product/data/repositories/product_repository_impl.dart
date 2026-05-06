@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import '../../domain/entities/product.dart';
-import '../../data/repositories/product_repository_impl.dart';
 // import domain entity...
 
 class ProductRepositoryImpl {
