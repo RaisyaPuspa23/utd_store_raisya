@@ -4,6 +4,10 @@ import 'core/router/app_router.dart';
 void main() {
   // Memastikan binding Flutter sudah siap
   WidgetsFlutterBinding.ensureInitialized();
+
+  MaterialApp.router(
+  routerConfig: router,
+  );
   
   runApp(const MyApp());
 }
