@@ -88,3 +88,6 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
+isar: ^3.1.0
+isar_flutter_libs: ^3.1.0
+path_provider: ^2.0.15
