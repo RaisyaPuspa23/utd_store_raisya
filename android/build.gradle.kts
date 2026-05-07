@@ -24,13 +24,15 @@ tasks.register<Delete>("clean") {
 }
 
 subprojects {
-    val project = this
-    if (project.name.contains("isar_flutter_libs")) {
-        project.afterEvaluate {
-            val android = project.extensions.findByName("android") as? com.android.build.gradle.BaseExtension
-            android?.let {
-                it.namespace = "isar_flutter_libs"
-            }
+    project.configurations.all {
+        resolutionStrategy.eachDependency {
+            // Memastikan sinkronisasi dependensi tetap berjalan
         }
+    }
+}
+
+allprojects {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = "1.8"
     }
 }
