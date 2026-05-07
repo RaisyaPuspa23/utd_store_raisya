@@ -24,12 +24,13 @@ tasks.register<Delete>("clean") {
 }
 
 subprojects {
-    afterEvaluate {
-        val android = extensions.findByName("android")
-        if (android != null) {
-            // Logika untuk mengisi namespace yang kosong secara otomatis
-            val method = android.javaClass.getMethod("setNamespace", String::class.java)
-            method.invoke(android, group.toString())
+    val project = this
+    if (project.name.contains("isar_flutter_libs")) {
+        project.afterEvaluate {
+            val android = project.extensions.findByName("android") as? com.android.build.gradle.BaseExtension
+            android?.let {
+                it.namespace = "isar_flutter_libs"
+            }
         }
     }
 }
