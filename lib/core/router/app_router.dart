@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import '../../features/product/presentation/pages/splash/splash_page.dart';
 import '../../features/product/presentation/pages/product_page.dart'; 
+import '../../features/product/presentation/pages/bookmark_page.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -14,6 +15,10 @@ final router = GoRouter(
     GoRoute(
       path: '/home',
       builder: (context, state) => const ProductPage(), 
+    ),
+    GoRoute(
+      path: '/bookmarks',
+      builder: (context, state) => const BookmarkPage(), 
     ),
   ],
 );

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'core/di/injection.dart'; // Import pelayan/injection kamu [cite: 456]
 import 'core/router/app_router.dart';
 
 void main() {
-  // Memastikan binding Flutter sudah siap
+  // Memastikan binding Flutter sudah siap 
   WidgetsFlutterBinding.ensureInitialized();
 
-  MaterialApp.router(
-  routerConfig: router,
-  );
+  // WAJIB: Panggil setupLocator sebelum aplikasi jalan! 
+  setupLocator(); 
   
   runApp(const MyApp());
 }
@@ -17,14 +17,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Menggunakan MaterialApp.router agar bisa memakai GoRouter
     return MaterialApp.router(
       title: 'UTD Store Raisya',
       debugShowCheckedModeBanner: false,
-      // Menyambungkan ke file app_router.dart yang tadi kita buat
-      routerConfig: router,
+      routerConfig: router, // Memakai router dari app_router.dart [cite: 471]
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink), // Pakai pink sesuai style kamu
         useMaterial3: true,
       ),
     );
