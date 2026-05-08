@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import '../../../../core/di/injection.dart'; 
+import '../../../../core/network/isar_service.dart'; 
+import '../../domain/product_bookmark_model.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -84,9 +87,31 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                       subtitle: Text("\$${product['price']}"),
                       trailing: IconButton(
-                        icon: const Icon(Icons.favorite_border,
-                            color: Colors.pink),
-                        onPressed: () {},
+                          icon: const Icon(
+                            Icons.favorite_border,
+                            color: Colors.pink,
+                          ),
+                          onPressed: () async {
+                          // Panggil service lewat locator
+                          final isarService = locator<IsarService>();
+
+                          final bookmark = ProductBookmark()
+                            ..productId = product['id'].toString()
+                            ..name = displayTitle
+                            ..image = product['image']
+                            ..createdAt = DateTime.now();
+
+                          await isarService.saveBookmark(bookmark);
+
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Berhasil di Bookmark!'),
+                                backgroundColor: Colors.pink,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),

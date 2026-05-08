@@ -18,7 +18,6 @@ void setupLocator() {
   locator.registerLazySingleton<ProductRepositoryImpl>(
     () => ProductRepositoryImpl(locator<Dio>()),
   );
-
   // 4. Register Cubit (State Management)
   // Pakai registerFactory agar Cubit baru dibuat setiap kali halaman dibuka
   locator.registerFactory<ProductCubit>(
