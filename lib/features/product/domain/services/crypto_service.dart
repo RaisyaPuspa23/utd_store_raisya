@@ -5,59 +5,62 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 class CryptoService {
 
-  late WebSocketChannel channel;
+  WebSocketChannel? channel;
 
   final StreamController<String>
-      _priceController =
+      _bitcoinController =
       StreamController.broadcast();
 
   Stream<String> get bitcoinPriceStream =>
-      _priceController.stream;
+      _bitcoinController.stream;
 
-  CryptoService() {
+  void connect() {
 
-    connectWebSocket();
-  }
+    try {
 
-  void connectWebSocket() {
+      channel = WebSocketChannel.connect(
+        Uri.parse(
+          'wss://ws.coincap.io/prices?assets=bitcoin',
+        ),
+      );
 
-    channel = WebSocketChannel.connect(
+      channel!.stream.listen(
 
-      Uri.parse(
-        'wss://ws.coincap.io/prices?assets=bitcoin',
-      ),
-    );
+        (event) {
 
-    channel.stream.listen(
+          final data = jsonDecode(event);
 
-      (event) {
+          final price =
+              data['bitcoin'] ?? '0';
 
-        final data = jsonDecode(event);
+          _bitcoinController.add(price);
+        },
 
-        final price = data['bitcoin'];
+        onError: (error) {
 
-        if (price != null) {
+          print(
+            "WebSocket Error: $error",
+          );
+        },
 
-          _priceController.add(price);
-        }
-      },
+        onDone: () {
 
-      onError: (error) {
+          print(
+            "WebSocket Closed",
+          );
+        },
+      );
 
-        print("WebSocket Error: $error");
-      },
+    } catch (e) {
 
-      onDone: () {
-
-        print("WebSocket Closed");
-      },
-    );
+      print("Connection Error: $e");
+    }
   }
 
   void dispose() {
 
-    channel.sink.close();
+    channel?.sink.close();
 
-    _priceController.close();
+    _bitcoinController.close();
   }
 }

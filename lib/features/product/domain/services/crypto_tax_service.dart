@@ -12,12 +12,14 @@ Future<String> calculateCryptoTax() async {
 
 String heavyCalculation(int totalLoop) {
 
-  longCalculation(totalLoop);
+  final total =
+      longCalculation(totalLoop);
 
-  return "Total Pajak Kripto selesai dihitung 🚀";
+  return
+      "Total Pajak Kripto selesai 🚀 Hasil: $total";
 }
 
-void longCalculation(int totalLoop) {
+int longCalculation(int totalLoop) {
 
   int total = 0;
 
@@ -31,4 +33,6 @@ void longCalculation(int totalLoop) {
       total ~/= 2;
     }
   }
+
+  return total;
 }

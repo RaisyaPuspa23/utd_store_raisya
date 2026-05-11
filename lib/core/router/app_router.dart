@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/product/presentation/pages/splash/splash_page.dart';
 import '../../features/product/presentation/pages/product_page.dart'; 
 import '../../features/product/presentation/pages/bookmark_page.dart';
+import '../../features/product/presentation/pages/battery_page.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -19,6 +20,11 @@ final router = GoRouter(
     GoRoute(
       path: '/bookmarks',
       builder: (context, state) => const BookmarkPage(), 
+    ),
+    GoRoute(
+      path: '/battery',
+      builder: (context, state) =>
+          const BatteryPage(),
     ),
   ],
 );

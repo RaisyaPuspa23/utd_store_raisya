@@ -11,14 +11,22 @@ import '../../../../core/network/isar_service.dart';
 
 import '../../domain/product_bookmark_model.dart';
 
+import 'package:flutter/services.dart';
+
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
 
   @override
   State<ProductPage> createState() => _ProductPageState();
-}
+} 
 
 class _ProductPageState extends State<ProductPage> {
+
+    static const platform = MethodChannel(
+    'battery.channel',
+  );
+
+  String batteryLevel = "0";
 
   List products = [];
 
@@ -61,14 +69,18 @@ class _ProductPageState extends State<ProductPage> {
     });
 
     // REALTIME BITCOIN
+    cryptoService.connect();
+
     cryptoService.bitcoinPriceStream.listen((price) {
 
-      setState(() {
+      if (mounted) {
 
-        bitcoinPrice = price;
+        setState(() {
 
-      });
+          bitcoinPrice = price;
 
+        });
+      }
     });
 
   }
@@ -130,6 +142,42 @@ class _ProductPageState extends State<ProductPage> {
     super.dispose();
   }
 
+  Future<void> getBatteryLevel() async {
+
+    try {
+
+      final String result =
+          await platform.invokeMethod(
+        'getBatteryLevel',
+      );
+
+      setState(() {
+
+        batteryLevel = result;
+
+      });
+
+    } on PlatformException catch (e) {
+
+      batteryLevel =
+          "Failed: ${e.message}";
+    }
+  }
+
+  Future<void> showNativeToast() async {
+
+    try {
+
+      await platform.invokeMethod(
+        'showToast',
+      );
+
+    } on PlatformException catch (e) {
+
+      print(e.message);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -144,6 +192,19 @@ class _ProductPageState extends State<ProductPage> {
         foregroundColor: Colors.white,
 
         actions: [
+          
+          // BUTTON BATTERY
+          IconButton(
+
+            icon: const Icon(
+              Icons.battery_full,
+            ),
+
+            onPressed: () {
+
+              context.push('/battery');
+            },
+          ),
 
           // 🔥 BUTTON BOOKMARK
           IconButton(
@@ -398,8 +459,7 @@ class _ProductPageState extends State<ProductPage> {
                                         stackTrace) {
 
                                   return const Icon(
-                                    Icons
-                                        .image_not_supported,
+                                    Icons.image_not_supported,
                                   );
                                 },
                               ),
