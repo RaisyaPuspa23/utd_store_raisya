@@ -2,20 +2,22 @@ import 'dart:async';
 
 class RealtimeProductService {
 
-  final StreamController<List<Map<String, dynamic>>>
+  final StreamController<List>
       _productController =
       StreamController.broadcast();
 
-  List<Map<String, dynamic>> products = [];
+  List realtimeProducts = [];
 
-  Stream<List<Map<String, dynamic>>> get productStream =>
+  Stream<List> get productStream =>
       _productController.stream;
 
   void startRealtimeUpdates() {
 
     // simulasi realtime tiap 10 detik
     Timer.periodic(
+
       const Duration(seconds: 10),
+
       (timer) {
 
         final newProduct = {
@@ -25,17 +27,17 @@ class RealtimeProductService {
               .toString(),
 
           "title":
-              "New Product ${products.length + 1}",
+              "New Product ${realtimeProducts.length + 1}",
 
           "price": 99.9,
 
           "image":
-              "https://i.pravatar.cc/150?img=${products.length + 1}",
+              "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
         };
 
-        products.insert(0, newProduct);
+        realtimeProducts.insert(0, newProduct);
 
-        _productController.add(products);
+        _productController.add(realtimeProducts);
       },
     );
   }
