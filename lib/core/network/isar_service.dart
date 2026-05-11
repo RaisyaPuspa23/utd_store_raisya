@@ -3,7 +3,6 @@ import 'package:path_provider/path_provider.dart';
 import '../../features/product/domain/product_bookmark_model.dart';
 
 class IsarService {
-
   late Future<Isar> db;
 
   IsarService() {
@@ -11,11 +10,8 @@ class IsarService {
   }
 
   Future<Isar> openDB() async {
-
     if (Isar.instanceNames.isEmpty) {
-
-      final dir =
-          await getApplicationDocumentsDirectory();
+      final dir = await getApplicationDocumentsDirectory();
 
       return await Isar.open(
         [ProductBookmarkSchema],
@@ -26,33 +22,32 @@ class IsarService {
     return Future.value(Isar.getInstance());
   }
 
-  // 🔥 SIMPAN BOOKMARK
-  Future<void> saveBookmark(
-      ProductBookmark bookmark) async {
-
+  // =========================
+  // SAVE BOOKMARK
+  // =========================
+  Future<void> saveBookmark(ProductBookmark bookmark) async {
     final isar = await db;
 
-    isar.writeTxnSync(() {
-
-      isar.productBookmarks.putSync(bookmark);
+    await isar.writeTxn(() async {
+      await isar.productBookmarks.put(bookmark);
     });
   }
 
-  // 🔥 HAPUS BOOKMARK
+  // =========================
+  // DELETE BOOKMARK
+  // =========================
   Future<void> deleteBookmark(int id) async {
-
     final isar = await db;
 
-    isar.writeTxnSync(() {
-
-      isar.productBookmarks.deleteSync(id);
+    await isar.writeTxn(() async {
+      await isar.productBookmarks.delete(id);
     });
   }
 
-  // 🔥 STREAM REALTIME
-  Stream<List<ProductBookmark>>
-      getBookmarksStream() async* {
-
+  // =========================
+  // STREAM BOOKMARK
+  // =========================
+  Stream<List<ProductBookmark>> getBookmarksStream() async* {
     final isar = await db;
 
     yield* isar.productBookmarks
@@ -60,10 +55,10 @@ class IsarService {
         .watch(fireImmediately: true);
   }
 
-  // 🔥 AMBIL SEMUA BOOKMARK
-  Future<List<ProductBookmark>>
-      getBookmarks() async {
-
+  // =========================
+  // GET ALL BOOKMARKS
+  // =========================
+  Future<List<ProductBookmark>> getBookmarks() async {
     final isar = await db;
 
     return await isar.productBookmarks
