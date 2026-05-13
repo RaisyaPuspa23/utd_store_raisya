@@ -6,12 +6,17 @@ plugins {
 
 android {
     namespace = "com.example.utd_store_raisya"
-    compileSdk = flutter.compileSdkVersion
+
+    compileSdk = 35
+
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility =
+            JavaVersion.VERSION_1_8
+
+        targetCompatibility =
+            JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -19,16 +24,22 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.utd_store_raisya"
+        applicationId =
+            "com.example.utd_store_raisya"
+
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+
+        targetSdk = 35
+
         versionCode = flutter.versionCode
+
         versionName = flutter.versionName
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig =
+                signingConfigs.getByName("debug")
         }
     }
 }
